@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Moonboard with Grid Overlay</title>
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='styles.css') }}">
+</head>
+<body>
+
+
+<div class="container">
+  <img src="{{ url_for('static', filename='moonboard2016.jpg') }}" alt="Moonboard" id="moonboard">
+  <div class="grid" id="grid"></div>
+</div>
+
+
+<p id="coordinateDisplay">coordinates:</p>
+<!-- Removed action attribute -->
+<form method="post">
+  <button id="gradeButton" type="button">Grade Climb</button>
+</form>
+
+
+<div id="grade">{{grade}}</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+
+
+</body>
+</html>
