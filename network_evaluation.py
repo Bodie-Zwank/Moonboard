@@ -9,6 +9,7 @@ def predict_nn(network, input):
     for layer in network:
         output = layer.forward(output)
     # finding greatest value in probabilities
+    print(output)
     return np.argmax(output)
 
 def evaluate_nn(climbs, grades, network):

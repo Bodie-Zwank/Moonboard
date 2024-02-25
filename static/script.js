@@ -87,7 +87,20 @@ document.addEventListener("DOMContentLoaded", function() {
                 console.error("AJAX request failed:", error);
             }
           });
-      
     });
+    document.getElementById('clearButton').addEventListener('click', function() {
+      // Clear the coordinates array
+      coordinates = [];
+  
+      // Remove the 'clicked' class from all grid squares
+      var allSquares = document.querySelectorAll('.grid-square.clicked');
+      allSquares.forEach(function(square) {
+          square.classList.remove('clicked');
+      });
+  
+      // Update coordinate display to show no coordinates
+      document.getElementById('coordinateDisplay').textContent = 'Coordinates: ';
+  });
+  
 });
   
