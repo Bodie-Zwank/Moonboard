@@ -24,7 +24,6 @@ class Dense(Layer):
         return np.dot(self.weights, self.input) + self.biases
     def backward(self, output_gradient, learning_rate):
          # all gradients come from dE/dY, or error with respect to output
-         # breakig down dE/dY into dE/dY_1 + dE/dY_2 + dE/dY_3 + ... and finding individual derivatives (ex. dE/dW_21) can lead back to these generalized gradients
          next_output_gradient = np.dot(self.weights.T, output_gradient)
          weights_gradient = np.dot(output_gradient, self.input.T)
          self.weights -= learning_rate * weights_gradient
