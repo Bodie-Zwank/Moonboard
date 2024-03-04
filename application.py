@@ -5,6 +5,8 @@ from get_data import one_hot
 import numpy as np
 from flask import Flask, request, jsonify, url_for, render_template
 from http.server import BaseHTTPRequestHandler, HTTPServer
+from test import *
+
 
 application = Flask(__name__)
 app = application
@@ -19,7 +21,7 @@ def grade_climb():
     coordinates = data['coordinates']
     print(coordinates)
     # Assuming 'coordinates' is a list of coordinate strings and needs further processing
-    grade = calculate_grade(coordinates)
+    grade = grade_input_climb(coordinates)
     print(grade)
     return jsonify({'grade': grade})  # Respond with JSON
 
