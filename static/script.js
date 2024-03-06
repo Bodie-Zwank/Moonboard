@@ -72,25 +72,59 @@ document.addEventListener("DOMContentLoaded", function() {
     }
     // JavaScript: Add event listener to the "grade" button
     document.getElementById('gradeButton').addEventListener('click', function() {
-        // AJAX request to send coordinates to backend
-        console.log(JSON.stringify({coordinates: coordinates}))
-          $.ajax({
-            url: '/grade-climb', // Ensure this matches the Flask route exactly
-            type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify({ coordinates: coordinates }),
-            success: function(response) {
-                // Update HTML to display the grade
-                $('#grade').text(response.grade);
-            },
-            error: function(xhr, status, error) {
-                console.error("AJAX request failed:", error);
-            }
-          });
-    });
+      // Display "Finding beta..." while waiting for the response
+      $('#grade').text('Finding beta...');
+  
+      // First AJAX request to find the beta
+      $.ajax({
+          url: '/find-beta', // Adjust this URL to your Flask route for finding beta
+          type: 'POST',
+          contentType: 'application/json',
+          data: JSON.stringify({coordinates: coordinates}),
+          success: function(betaResponse) {
+              // Assuming betaResponse.beta contains the beta needed for grading
+              // Display the beta response and proceed to grade the climb
+              if (Array.isArray(betaResponse.grade)) {
+                // Convert each element of the array to a string and join them with line breaks
+                var betaStrings = betaResponse.grade.join(', ');
+                $('#grade').html('<br><b>Beta found:</b> ' + betaStrings + '<br><br>Grading climb...');
+              } else {
+                // Fallback in case the response is not in the expected format
+                $('#grade').text('Beta: ' + betaResponse.grade + '<br>Grading climb...');
+              }
+  
+              // Now include the beta in the second AJAX request to grade the climb
+              $.ajax({
+                  url: '/grade-climb', // Ensure this matches your Flask route for grading
+                  type: 'POST',
+                  contentType: 'application/json',
+                  // Include both coordinates and beta in the request data
+                  data: JSON.stringify({
+                      coordinates: coordinates
+                  }),
+                  success: function(gradeResponse) {
+                      // Update HTML to display the grade
+                      $('#grade').append('<br><b>Grade:</b> ' + gradeResponse.grade);
+                  },
+                  error: function(xhr, status, error) {
+                      // Handle error or show a default error message for grading
+                      console.error("AJAX request for grading failed:", error);
+                      $('#grade').append('<br>Error grading climb');
+                  }
+              });
+          },
+          error: function(xhr, status, error) {
+              // Handle error or show a default error message for finding beta
+              console.error("AJAX request for finding beta failed:", error);
+              $('#grade').text('Error finding beta');
+          }
+      });
+  });
     document.getElementById('clearButton').addEventListener('click', function() {
       // Clear the coordinates array
       coordinates = [];
+
+      $('#grade').text('');
   
       // Remove the 'clicked' class from all grid squares
       var allSquares = document.querySelectorAll('.grid-square.clicked');

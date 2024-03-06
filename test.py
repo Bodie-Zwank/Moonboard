@@ -79,7 +79,7 @@ def custom_loss(layer):
 #print(f'x train: {X_train[0]}')
 #print('moonboard test: ', moonboardTest['X'][0])
 
-def grade_input_climb(climb):
+def find_climb_beta(climb):
     climb = convert_climb(climb)
 
     moonboardTest = classify_and_reorganize_data(climb)
@@ -109,10 +109,11 @@ def grade_input_climb(climb):
         if status[i].overallSuccessRate() > max:
             max = status[i].overallSuccessRate()
             index = i
+    #return status[index].handOperator
+    return status[index]
 
-    #print(status[index].handOperator, status[index].overallSuccessRate())
-
-    beamerBeta = status[index]
+def grade_climb_with_beta(climb):
+    beamerBeta = climb
 
     numOfMoves = len(beamerBeta.handSequence) 
     routeHandSequence = beamerBeta.handSequence  
@@ -123,7 +124,7 @@ def grade_input_climb(climb):
         targetCoordinate = beamerBeta.getXYFromOrder(routeHandSequence[orderOfHand])
         newHandStr = coordinateToString(targetCoordinate) + "-" + routeOpSequence[orderOfHand]
         handStringList.append(newHandStr)
-    #print(handStringList)
+    print(handStringList)
     all_climb_data = moveGeneratorFromStrList(handStringList, string_mode = False)
     x_vectors = np.zeros((22, len(all_climb_data)))
     for orderOfMove, moveInfoDict in enumerate(all_climb_data):   

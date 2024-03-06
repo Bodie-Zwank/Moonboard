@@ -15,13 +15,30 @@ app = application
 def index():
   return render_template('index.html')
 
-@app.route('/grade-climb', methods=['POST'])
-def grade_climb():
-    data = request.json  # Access JSON data sent with POST
+@app.route('/find-beta', methods=['POST'])
+def get_beta():
+    data = request.json
     coordinates = data['coordinates']
     print(coordinates)
     # Assuming 'coordinates' is a list of coordinate strings and needs further processing
-    grade = grade_input_climb(coordinates)
+    beta = find_climb_beta(coordinates)
+    numOfMoves = len(beta.handSequence) 
+    routeHandSequence = beta.handSequence  
+    routeOpSequence = beta.handOperator 
+    handStringList = []
+
+    for orderOfHand in range(numOfMoves): 
+        targetCoordinate = beta.getXYFromOrder(routeHandSequence[orderOfHand])
+        newHandStr = coordinateToString(targetCoordinate) + "-" + routeOpSequence[orderOfHand]
+        handStringList.append(newHandStr)
+    return jsonify({'grade': handStringList})
+
+@app.route('/grade-climb', methods=['POST'])
+def grade_climb():
+    data = request.json  # Access JSON data sent with POST
+    beta = find_climb_beta(data['coordinates'])
+    # Assuming 'coordinates' is a list of coordinate strings and needs further processing
+    grade = grade_climb_with_beta(beta)
     print(grade)
     return jsonify({'grade': grade})  # Respond with JSON
 
