@@ -1,4 +1,4 @@
-from grade_conversion import font_to_num
+from helpers.small.grade_conversion import font_to_num
 import json
 import numpy as np
 

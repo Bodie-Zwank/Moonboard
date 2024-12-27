@@ -1,5 +1,5 @@
-from grade_conversion import font_to_num
-from get_data import to_sequence
+from helpers.small.grade_conversion import font_to_num
+from helpers.small.get_data import to_sequence
 import numpy as np
 
 def predict_nn(network, input):

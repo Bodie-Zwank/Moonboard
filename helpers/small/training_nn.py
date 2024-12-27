@@ -2,8 +2,8 @@
 from layers import Dense, ReLU, Tanh, Softmax, Sigmoid
 from loss_functions import mse, mse_prime, bce, bce_prime
 import numpy as np
-from get_data import *
-from network_evaluation import *
+from helpers.small.get_data import *
+from helpers.small.network_evaluation import *
 from grade_conversion import font_to_num, num_to_font
 import tkinter as tk
 import pickle

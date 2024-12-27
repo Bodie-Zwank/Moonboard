@@ -2,7 +2,7 @@ import pickle
 import numpy as np
 from flask import Flask, request, jsonify, url_for, render_template
 from http.server import BaseHTTPRequestHandler, HTTPServer
-from preprocessing_helper import *
+from helpers.big.preprocessing_helper import *
 import os
 import heapq
 import pandas as pd
@@ -15,8 +15,8 @@ from keras.layers import Activation, Dense
 from keras.layers import Flatten, LSTM, Masking
 from keras.models import Model
 from keras.layers import Input
-from model_helper import *
-from DeepRouteSetHelper import *
+from helpers.big.model_helper import *
+from helpers.big.DeepRouteSetHelper import *
 import warnings
 warnings.filterwarnings('ignore', category=DeprecationWarning)
 
@@ -169,10 +169,10 @@ def grade_climb_with_beta(climb):
                     loss=custom_loss(softmax2),
                     metrics=['sparse_categorical_accuracy'])
 
-    with open("training_seq_n_12_rmrp0", 'rb') as f:
+    with open("processed_data/training_seq_n_12_rmrp0", 'rb') as f:
         training_set = pickle.load(f)
 
-    GradeNet.load_weights("GradeNet.h5")
+    GradeNet.load_weights("processed_data/GradeNet.h5")
     
     grade = GradeNet.predict(moonboardTest['X']).argmax(axis = 1)
     #print(grade[0])
